@@ -13,7 +13,7 @@
   "require": {
     "php": ">=7.0",
     "lyssal/doctrine-orm": "^0.2",
-    "doctrine/collections": "^2"
+    "doctrine/collections": "^1|^2"
   },
   "autoload": {
     "psr-4": {
