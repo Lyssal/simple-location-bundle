@@ -1,0 +1,23 @@
+{
+  "name": "lyssal/simple-location-bundle",
+  "description": "The simple location bundle permits create dynamic typed locations (countries, cities, etc).",
+  "license" : "MIT",
+  "keywords": ["location", "country", "city"],
+  "type": "symfony-bundle",
+  "authors": [
+    {
+      "name": "Rémi Leclerc",
+      "homepage": "http://www.lyssal.com/"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "lyssal/doctrine-orm": "^0.2",
+    "doctrine/collections": "^2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lyssal\\SimpleLocationBundle\\": "src/"
+    }
+  }
+}
