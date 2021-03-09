@@ -56,7 +56,8 @@ class Location
 
     public function __construct()
     {
-        $this->parents = $this->children = new ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function getId(): ?int
