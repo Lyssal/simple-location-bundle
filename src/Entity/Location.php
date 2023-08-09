@@ -50,7 +50,7 @@ class Location
     /**
      * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
      *
-     * @ORM\ManyToMany(targetEntity="Location", mappedBy="parents", cascade="persist")
+     * @ORM\ManyToMany(targetEntity="Location", mappedBy="parents", cascade={"persist"})
      */
     protected $children;
 
