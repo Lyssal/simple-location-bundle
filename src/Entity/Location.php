@@ -13,46 +13,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\MappedSuperclass(repositoryClass="Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationRepository")
- */
-class Location
+#[ORM\MappedSuperclass(repositoryClass: \Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationRepository::class)]
+abstract class Location
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    protected int $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=256, nullable=false)
      */
-    protected $name;
+    #[ORM\Column(type: 'string', length: 256, nullable: false)]
+    protected string $name;
 
     /**
      * @var \Lyssal\SimpleLocationBundle\Entity\LocationType
-     *
-     * @ORM\ManyToOne (targetEntity="Lyssal\SimpleLocationBundle\Entity\LocationType")
-     * @ORM\JoinColumn(nullable=false)
      */
-    protected $type;
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \Lyssal\SimpleLocationBundle\Entity\LocationType::class)]
+    protected LocationType $type;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
-     *
-     * @ORM\ManyToMany(targetEntity="Location", inversedBy="children")
      */
-    protected $parents;
+    //#[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'children')]
+    protected Collection $parents;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
-     *
-     * @ORM\ManyToMany(targetEntity="Location", mappedBy="parents", cascade={"persist"})
      */
-    protected $children;
+    //#[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'parents', cascade: ['persist'])]
+    protected Collection $children;
 
     public function __construct()
     {

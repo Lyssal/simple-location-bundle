@@ -13,38 +13,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationTypeRepository")
- */
+#[ORM\Entity(repositoryClass: \Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationTypeRepository::class)]
 class LocationType
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="smallint")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'smallint')]
+    private int $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=128, nullable=false)
      */
-    private $name;
+    #[ORM\Column(type: 'string', length: 128, nullable: false)]
+    private string $name;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\LocationType[]
-     *
-     * @ORM\ManyToMany(targetEntity="LocationType", inversedBy="children")
      */
-    private $parents;
+    #[ORM\ManyToMany(targetEntity: LocationType::class, inversedBy: 'children')]
+    private Collection $parents;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\LocationType[]
-     *
-     * @ORM\ManyToMany(targetEntity="LocationType", mappedBy="parents")
      */
-    private $children;
+    #[ORM\ManyToMany(targetEntity: LocationType::class, mappedBy: 'parents')]
+    private Collection $children;
 
     public function __construct()
     {
