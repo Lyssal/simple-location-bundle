@@ -13,14 +13,13 @@ composer require lyssal/simple-location-bundle
 ### Create your Location entity
 
 ```php
-namespace App\Entity;
+namespace App\Entity\Location;
 
 use Doctrine\ORM\Mapping as ORM;
+use Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationRepository;
 use Lyssal\SimpleLocationBundle\Entity\Location as LyssalLocation;
 
-/**
- * @ORM\Entity()
- */
+#[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location extends LyssalLocation
 {
     // If you want to add properties

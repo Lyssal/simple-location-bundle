@@ -12,12 +12,16 @@
   ],
   "require": {
     "php": "~8",
-    "lyssal/doctrine-orm": "^0.2",
-    "doctrine/collections": "^1|^2"
+    "doctrine/collections": "^2",
+    "doctrine/dbal": "^3",
+    "lyssal/doctrine-extra-bundle": "^0.1"
   },
   "autoload": {
     "psr-4": {
       "Lyssal\\SimpleLocationBundle\\": "src/"
     }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.64"
   }
 }

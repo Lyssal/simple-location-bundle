@@ -11,30 +11,29 @@ namespace Lyssal\SimpleLocationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationTypeRepository;
 
-#[ORM\Entity(repositoryClass: \Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationTypeRepository::class)]
+#[ORM\Entity(repositoryClass: LocationTypeRepository::class)]
 class LocationType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'smallint')]
-    private int $id;
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     */
-    #[ORM\Column(type: 'string', length: 128, nullable: false)]
+    #[ORM\Column(length: 128)]
     private string $name;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\LocationType[]
+     * @var Collection|LocationType[]
      */
     #[ORM\ManyToMany(targetEntity: LocationType::class, inversedBy: 'children')]
     private Collection $parents;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\LocationType[]
+     * @var Collection|LocationType[]
      */
     #[ORM\ManyToMany(targetEntity: LocationType::class, mappedBy: 'parents')]
     private Collection $children;
@@ -63,7 +62,7 @@ class LocationType
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\LocationType[]
+     * @return Collection|LocationType[]
      */
     public function getParents(): Collection
     {
@@ -73,7 +72,7 @@ class LocationType
     public function addParent(self $parent): self
     {
         if (!$this->parents->contains($parent)) {
-            $this->parents[] = $parent;
+            $this->parents->add($parent);
         }
 
         return $this;
@@ -89,7 +88,7 @@ class LocationType
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\LocationType[]
+     * @return Collection|LocationType[]
      */
     public function getChildren(): Collection
     {
@@ -100,7 +99,7 @@ class LocationType
     {
         if (!$this->children->contains($child)) {
             $child->addParent($this);
-            $this->children[] = $child;
+            $this->children->add($child);
         }
 
         return $this;

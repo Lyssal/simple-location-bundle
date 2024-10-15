@@ -12,38 +12,36 @@ namespace Lyssal\SimpleLocationBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationRepository;
 
-#[ORM\MappedSuperclass(repositoryClass: \Lyssal\SimpleLocationBundle\Doctrine\Repository\LocationRepository::class)]
+#[ORM\MappedSuperclass(repositoryClass: LocationRepository::class)]
 abstract class Location
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    protected int $id;
+    #[ORM\Column]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     */
-    #[ORM\Column(type: 'string', length: 256, nullable: false)]
+    #[ORM\Column(length: 256, nullable: false)]
     protected string $name;
 
-    /**
-     * @var \Lyssal\SimpleLocationBundle\Entity\LocationType
-     */
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: \Lyssal\SimpleLocationBundle\Entity\LocationType::class)]
+    #[ORM\ManyToOne(targetEntity: LocationType::class)]
     protected LocationType $type;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
+     * @var Collection|Location[]
      */
-    //#[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\ManyToMany(targetEntity: LocationInterface::class, inversedBy: 'children')]
+    #[ORM\JoinTable(name: 'location_location')]
+    #[ORM\JoinColumn(name: 'location_source')]
+    #[ORM\InverseJoinColumn(name: 'location_target')]
     protected Collection $parents;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
+     * @var Collection|Location[]
      */
-    //#[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'parents', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: LocationInterface::class, mappedBy: 'parents', cascade: ['persist'])]
     protected Collection $children;
 
     public function __construct()
@@ -82,7 +80,7 @@ abstract class Location
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
+     * @return Collection|Location[]
      */
     public function getParents(): Collection
     {
@@ -92,7 +90,7 @@ abstract class Location
     public function addParent(self $parent): self
     {
         if (!$this->parents->contains($parent)) {
-            $this->parents[] = $parent;
+            $this->parents->add($parent);
         }
 
         return $this;
@@ -108,7 +106,7 @@ abstract class Location
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|\Lyssal\SimpleLocationBundle\Entity\Location[]
+     * @return Collection|Location[]
      */
     public function getChildren(): Collection
     {
@@ -119,7 +117,7 @@ abstract class Location
     {
         if (!$this->children->contains($child)) {
             $child->addParent($this);
-            $this->children[] = $child;
+            $this->children->add($child);
         }
 
         return $this;

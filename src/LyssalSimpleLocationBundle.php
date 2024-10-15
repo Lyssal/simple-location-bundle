@@ -9,8 +9,8 @@
 
 namespace Lyssal\SimpleLocationBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class LyssalSimpleLocationBundle extends Bundle
+final class LyssalSimpleLocationBundle extends AbstractBundle
 {
 }
